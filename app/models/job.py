@@ -4,7 +4,7 @@ from sqlalchemy import String, Integer, Boolean, Enum, Text
 from sqlalchemy.dialects.postgresql import ARRAY
 import enum
 
-from app.models.enums.job_enum import JobRemote, JobLevel, JobSource
+from models.enums.job_enum import JobRemote, JobLevel, JobSource
 
 class Job(Base):
     title: Mapped[str] = mapped_column(String(500), nullable=False)
