@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
 from uuid import UUID
-from models.enums.job_enum import JobRemote, JobLevel, JobSource
+from app.models.enums.job_enum import JobRemote, JobLevel, JobSource
 
 class JobCreate(BaseModel):
     title: str
