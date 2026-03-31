@@ -1,8 +1,8 @@
-from models.base import Base
+from app.models.base import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, BigInteger, Boolean, Enum
 
-from models.enums.user_enum import UserRole
+from app.models.enums.user_enum import UserRole
 
 class User(Base):
     telegram_id: Mapped[int] = mapped_column(BigInteger, unique=True, nullable=False)

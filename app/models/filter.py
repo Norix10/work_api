@@ -1,8 +1,8 @@
-from models.base import Base
+from app.models.base import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, Integer, Boolean, ForeignKey, Enum
 from sqlalchemy.dialects.postgresql import ARRAY
-from models.job import JobLevel, JobRemote
+from app.models.job import JobLevel, JobRemote
 import uuid
 
 class Filter(Base):
