@@ -13,7 +13,6 @@ async def authenticate_with_telegram(
 ) -> AuthResponse:
     return await service.telegram_auth(data)
 
-
 @router.post("/refresh", response_model=AuthResponse)
 async def refresh_token(
     data: RefreshTokenRequest,

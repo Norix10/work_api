@@ -21,7 +21,7 @@ async def create_filter(
     current_user: User = Depends(get_current_user),
     service: FilterService = Depends(get_filter_service)
 ) -> FilterResponse:
-    return await service.create_filter(current_user.id, data)
+    return await service.create_filters(current_user.id, data)
 
 @router.put("/{filter_id}", response_model=FilterResponse)
 async def update_filter(
@@ -30,7 +30,7 @@ async def update_filter(
     current_user: User = Depends(get_current_user),
     service: FilterService = Depends(get_filter_service)
 ) -> FilterResponse:
-    return await service.update_filter(current_user.id, filter_id, data)
+    return await service.update_filters(filter_id, current_user.id, data)
 
 @router.delete("/{filter_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_filter(
