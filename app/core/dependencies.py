@@ -7,11 +7,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.database import get_async_session
 from app.core.config import settings
+
 from app.repository.user import UserRepository
 from app.repository.job import JobRepository
 from app.repository.filter import FilterRepository
 from app.repository.sent_job import SentJobRepository
 from app.repository.refresh_token import RefreshRepository
+from app.repository.nofication_settings import NotificationSettingsRepository
+
+from app.services.nofication import NotificationService 
 from app.services.auth import AuthService
 from app.services.user import UserService
 from app.services.job import JobService
@@ -50,6 +54,11 @@ async def get_refresh_token_repo(
 ) -> RefreshRepository:
     return RefreshRepository(session)
 
+async def get_notification_repo(
+    session: AsyncSession = Depends(get_async_session),
+) -> NotificationSettingsRepository:
+    return NotificationSettingsRepository(session)
+
 
 async def get_auth_service(
     user_repo: UserRepository = Depends(get_user_repo),
@@ -68,6 +77,11 @@ async def get_filter_service(
     filter_repo: FilterRepository = Depends(get_filter_repo),
 ) -> FilterService:
     return FilterService(filter_repo=filter_repo)
+
+async def get_notification_service(
+    notification_repo: NotificationSettingsRepository = Depends(get_notification_repo),
+) -> NotificationService:
+    return NotificationService(notification_repo=notification_repo)
 
 
 async def get_job_service(
