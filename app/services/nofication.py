@@ -9,10 +9,10 @@ from app.schemas.job import JobResponse
 class NotificationService:
     def __init__(
         self,
-        notification_settings_repo: NotificationSettingsRepository,
+        notification_repo: NotificationSettingsRepository,
         sent_job_repo: SentJobRepository,
     ):
-        self.notification_settings_repo = notification_settings_repo
+        self.notification_settings_repo = notification_repo
         self.sent_job_repo = sent_job_repo
 
     async def get_settings(self, user_id: UUID) -> NotificationSettingsResponse:

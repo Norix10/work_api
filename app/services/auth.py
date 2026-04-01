@@ -46,8 +46,7 @@ class AuthService:
             RefreshToken(
                 user_id=user.id,
                 token=refresh_token,
-                expired_at=datetime.now(timezone.utc)
-                + timedelta(minutes=settings.REFRESH_TOKEN_EXPIRE_MINUTES),
+                expires_at=datetime.utcnow() + timedelta(minutes=settings.REFRESH_TOKEN_EXPIRE_MINUTES)
             )
         )
         return AuthResponse(
@@ -74,7 +73,6 @@ class AuthService:
             access_token=access_token,
             refresh_token=token,
         )
-    
+
     async def logout(self, token: str) -> None:
         await self.token_repo.delete_by_token(token)
-
