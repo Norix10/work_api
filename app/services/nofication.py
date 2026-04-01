@@ -3,7 +3,7 @@ from uuid import UUID
 from app.repository.nofication_settings import NotificationSettingsRepository
 from app.repository.sent_job import SentJobRepository
 from app.models.notification_settings import NotificationSettings
-from app.schemas.notification import NotificationSettingsUpdate, NotificationSettingsResponse
+from app.schemas.nofication import NotificationSettingsUpdate, NotificationSettingsResponse
 from app.schemas.job import JobResponse
 
 class NotificationService:

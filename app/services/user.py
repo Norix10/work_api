@@ -15,6 +15,10 @@ class UserService:
         if not user:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
         return UserResponse.model_validate(user) 
+    
+    async def get_all_users(self, skip: int = 0, limit: int = 100) -> list[UserResponse]:
+        users = await self.user_repo.get_all(skip=skip, limit=limit)
+        return [UserResponse.model_validate(u) for u in users]
 
     async def update_me(self, user_id: UUID, user_data: UserUpdate) -> UserResponse:
         user = await self.user_repo.get_by_id(user_id) 
