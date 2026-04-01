@@ -8,14 +8,18 @@ class Settings(BaseSettings):
     ALGORITHM: str = 'HS256'
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60*24*7
     REFRESH_TOKEN_EXPIRE_MINUTES: int = 60*24*30
-
     SECRET_KEY: str
     DATABASE_URL: str
     ECHO: bool = False
+    
+    # Bot
+    BOT_TOKEN: str
+    API_URL: str = "http://localhost:8000"
 
-    class Config:
-        env_file = ENV_PATH
-        env_file_encoding = 'utf-8'
-        case_sensitive = True
+    model_config = {
+        "env_file": ENV_PATH,
+        "env_file_encoding": "utf-8",
+        "case_sensitive": True
+    }
 
 settings = Settings()

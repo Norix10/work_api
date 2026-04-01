@@ -15,7 +15,7 @@ from app.repository.sent_job import SentJobRepository
 from app.repository.refresh_token import RefreshRepository
 from app.repository.nofication_settings import NotificationSettingsRepository
 
-from app.services.nofication import NotificationService 
+from app.services.nofication import NotificationService
 from app.services.auth import AuthService
 from app.services.user import UserService
 from app.services.job import JobService
@@ -54,6 +54,7 @@ async def get_refresh_token_repo(
 ) -> RefreshRepository:
     return RefreshRepository(session)
 
+
 async def get_notification_repo(
     session: AsyncSession = Depends(get_async_session),
 ) -> NotificationSettingsRepository:
@@ -78,10 +79,14 @@ async def get_filter_service(
 ) -> FilterService:
     return FilterService(filter_repo=filter_repo)
 
+
 async def get_notification_service(
     notification_repo: NotificationSettingsRepository = Depends(get_notification_repo),
+    sent_job_repo: SentJobRepository = Depends(get_sent_job_repo),
 ) -> NotificationService:
-    return NotificationService(notification_repo=notification_repo)
+    return NotificationService(
+        notification_repo=notification_repo, sent_job_repo=sent_job_repo
+    )
 
 
 async def get_job_service(
