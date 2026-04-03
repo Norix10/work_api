@@ -15,12 +15,9 @@ class Job(Base):
     salary_max: Mapped[int | None] = mapped_column(Integer, nullable=True)
     level: Mapped[JobLevel | None] = mapped_column(Enum(JobLevel), nullable=True)
     technologies: Mapped[list[str] | None] = mapped_column(ARRAY(String), nullable=True)
-    remote_type: Mapped[JobRemote] = mapped_column(Enum(JobRemote), nullable=False)
+    remote_type: Mapped[JobRemote | None] = mapped_column(Enum(JobRemote), nullable=True)
     source: Mapped[JobSource] = mapped_column(Enum(JobSource), nullable=False)
 
     sent_jobs: Mapped[list["SentJob"]] = relationship(
         back_populates="job", cascade="all, delete-orphan"
     )
-
-
-# title, company, url, decription, salary_min, max, level, technologies, remote, source, sent_jobs
