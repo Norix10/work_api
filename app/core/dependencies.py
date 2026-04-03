@@ -22,6 +22,8 @@ from app.services.job import JobService
 from app.services.filter import FilterService
 from app.models.user import User
 
+from app.models.enums.user_enum import UserRole
+
 bearer_scheme = HTTPBearer()
 
 
@@ -132,6 +134,7 @@ async def get_current_user(
 async def get_current_admin(
     current_user: User = Depends(get_current_user),
 ) -> User:
-    if current_user.role != "admin":
+
+    if current_user.role != UserRole.admin:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Admin only")
     return current_user
