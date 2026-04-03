@@ -15,3 +15,4 @@ class JobRemote(enum.Enum):
     full_remote = "full_remote"
     part_time = "part_time"
     office = "office"
+    any = "any" 
