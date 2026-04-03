@@ -49,6 +49,10 @@ class AuthService:
                 expires_at=datetime.utcnow() + timedelta(minutes=settings.REFRESH_TOKEN_EXPIRE_MINUTES)
             )
         )
+        if not user.is_active:
+            user.is_active = True
+            await self.user_repo.update(user)
+            
         return AuthResponse(
             access_token=access_token,
             refresh_token=refresh_token,

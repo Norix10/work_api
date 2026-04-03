@@ -2,18 +2,18 @@ from fastapi import APIRouter, Depends, status
 from uuid import UUID
 
 from app.core.dependencies import get_job_service, get_current_user
-from app.schemas.job import JobResponse, JobSearchRequest
+from app.schemas.job import JobResponse, JobSearchRequest, JobListResponse
 from app.models.user import User
 from app.services.job import JobService
 
 router = APIRouter(prefix="/jobs", tags=["jobs"])
 
-@router.get("/", response_model=list[JobResponse])
+@router.get("/", response_model=JobListResponse)
 async def get_jobs(
     skip: int = 0,
-    limit: int = 100,
+    limit: int = 100,   
     service: JobService = Depends(get_job_service)
-) -> list[JobResponse]:
+) -> JobListResponse:
     return await service.get_jobs(skip, limit)
 
 @router.get("/matched", response_model=list[JobResponse])

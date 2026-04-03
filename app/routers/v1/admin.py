@@ -7,6 +7,10 @@ from app.services.user import UserService
 from app.services.job import JobService
 from app.schemas.user import UserResponse
 from app.schemas.parsers import RunParserRequest
+from parsers.djinni import DjinniParser
+from parsers.djinni import DjinniParser
+from app.models.enums.job_enum import JobSource
+from parsers.dou import DouParser 
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -19,12 +23,26 @@ async def get_all_users(
     return await service.get_all_users()
 
 
-@router.post("/parsers/run", status_code=status.HTTP_200_OK)
+@router.post("/parsers/run")
 async def run_parsers(
     data: RunParserRequest,
     current_admin: User = Depends(get_current_admin),
-) -> dict[str, str]:
-    return {"status": "started", "source": data.source}
+    service: JobService = Depends(get_job_service)
+) -> dict:
+    if data.source == JobSource.djinni:
+        parser = DjinniParser()
+    if data.source == JobSource.dou:
+        parser = DouParser()
+    else:
+        return {"status": "error", "detail": "Parser not implemented yet"}
+
+    jobs = await parser.fetch_jobs(
+        technologies=data.technologies,
+        level=data.level.value if data.level else None,
+        remote_type=data.remote_type.value if data.remote_type else None,
+    )
+    saved = await service.save_jobs(jobs, data.technologies)
+    return {"status": "done", "source": data.source, "found": len(jobs), "saved": saved}
 
 
 @router.get("/parsers/status")

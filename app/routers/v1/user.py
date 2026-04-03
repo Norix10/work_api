@@ -14,6 +14,13 @@ async def get_me(
 ) -> UserResponse:
     return await service.get_me(current_user.id)
 
+@router.post("/me/deactivate", status_code=status.HTTP_204_NO_CONTENT)
+async def deactivate_me(
+    current_user: User = Depends(get_current_user),
+    service: UserService = Depends(get_user_service)
+) -> None:
+    await service.deactivate_me(current_user.id)
+
 @router.put("/me", response_model=UserResponse)
 async def update_me(
     data: UserUpdate,

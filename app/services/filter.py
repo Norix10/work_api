@@ -14,9 +14,7 @@ class FilterService:
     async def get_filters(self, user_id: UUID) -> list[FilterResponse]:
         filters = await self.filter_repo.get_by_user_id(user_id)
         if not filters:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Filter not found"
-            )
+            return []
         return [FilterResponse.model_validate(f) for f in filters]
 
     async def create_filters(self, user_id: UUID, data: FilterCreate) -> FilterResponse:

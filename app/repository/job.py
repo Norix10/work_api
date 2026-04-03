@@ -1,6 +1,8 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from uuid import UUID
+from sqlalchemy import or_
+
 from app.repository.base import BaseRepository
 from app.models.job import Job
 from app.schemas.job import JobSearchRequest
@@ -18,18 +20,22 @@ class JobRepository(BaseRepository[Job]):
         result = await self.session.execute(select(Job.id).where(Job.url == url))
         return result.scalar_one_or_none() is not None
 
-    async def get_matched_jobs(self, filters: JobSearchRequest) -> list[Job]:  
+    async def get_matched_jobs(self, filters: JobSearchRequest) -> list[Job]:
         query = select(Job)
 
         if filters.technologies:
-            query = query.where(Job.technologies.overlap(filters.technologies))
-        if filters.level:
+            from sqlalchemy import or_
+            conditions = [Job.title.ilike(f"%{tech}%") for tech in filters.technologies]
+            query = query.where(or_(*conditions))
+
+        if filters.level and filters.level.value != "any":
             query = query.where(Job.level == filters.level)
+
         if filters.salary_min:
-            query = query.where(Job.salary_min >= filters.salary_min)  
-        if filters.remote_type:
+            query = query.where(Job.salary_min >= filters.salary_min)
+
+        if filters.remote_type and filters.remote_type.value != "any":
             query = query.where(Job.remote_type == filters.remote_type)
 
         result = await self.session.execute(query)
         return list(result.scalars().all())
-

@@ -31,6 +31,13 @@ class UserService:
         updated_user = await self.user_repo.update(user)
         return UserResponse.model_validate(updated_user)
 
+    async def deactivate_me(self, user_id: UUID) -> None:
+        user = await self.user_repo.get_by_id(user_id)
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        user.is_active = False
+        await self.user_repo.update(user)
+
     async def delete_me(self, user_id: UUID) -> None:
         user = await self.user_repo.get_by_id(user_id)  
         if not user:

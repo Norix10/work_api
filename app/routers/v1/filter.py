@@ -15,7 +15,7 @@ async def get_filters(
 ) -> list[FilterResponse]:
     return await service.get_filters(current_user.id)
 
-@router.post("/", response_model=FilterResponse)
+@router.post("/", response_model=FilterResponse, status_code=status.HTTP_201_CREATED)
 async def create_filter(
     data: FilterCreate,
     current_user: User = Depends(get_current_user),
